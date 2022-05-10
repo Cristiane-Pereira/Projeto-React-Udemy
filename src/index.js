@@ -1,17 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+// import FunctionState from "./CodeExemple/FunctionState/FunctionState";
+// import StateExemple from "./CodeExemple/State&SetState/States&SetState";
+// import MethodsCycleLife from "./CodeExemple/MethodsCycleLife/MethodsCycleLife";
+// import DataFetching from "./CodeExemple/DataFetching/DataFetching";
+// import Tester from "./Tester";
+import FilterCard from "./CodeExemple/FilterCard/FilterCard";
+// import Home from "./Templates/Home/Home";
+import "./styles/global-style.css";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+ReactDOM.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    {/* <FunctionState /> -------Trabalhando com State e SetState no componente funcional */}
+    {/* <StateExemple /> -------- Trabalhando com State e SetState no componente de classe */}
+    {/* <MethodsCycleLife />  --------Trabalhando com Ciclo de vida */}
+    {/* <DataFetching /> --------Trabalhando com Fetch consumindo API */}
+    {/* <Tester />  -------- arquivo para treinamento*/}
+    <FilterCard />
+    {/* <Home /> */}
+  </React.StrictMode>,
+  document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
