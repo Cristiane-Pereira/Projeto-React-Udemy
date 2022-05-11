@@ -5,8 +5,8 @@ import ReactDOM from "react-dom";
 // import MethodsCycleLife from "./CodeExemple/MethodsCycleLife/MethodsCycleLife";
 // import DataFetching from "./CodeExemple/DataFetching/DataFetching";
 // import Tester from "./Tester";
-import FilterCard from "./CodeExemple/FilterCard/FilterCard";
-// import Home from "./Templates/Home/Home";
+// import FilterCard from "./CodeExemple/FilterCard/FilterCard";
+import Home from "./Templates/Home/Home";
 import "./styles/global-style.css";
 
 ReactDOM.render(
@@ -16,8 +16,8 @@ ReactDOM.render(
     {/* <MethodsCycleLife />  --------Trabalhando com Ciclo de vida */}
     {/* <DataFetching /> --------Trabalhando com Fetch consumindo API */}
     {/* <Tester />  -------- arquivo para treinamento*/}
-    <FilterCard />
-    {/* <Home /> */}
+    {/* <FilterCard />  ----------------- filtro de cards no componete de classe*/}
+    <Home />
   </React.StrictMode>,
   document.getElementById("root")
 );

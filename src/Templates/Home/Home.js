@@ -10,12 +10,11 @@ class Home extends Component {
     posts: [],
     allPosts: [],
     page: 0,
-    postsPerPage: 4,
+    postsPerPage: 8,
     searchValue: "",
   };
 
-  async componentDidMount() {
-    //Monta na tela.
+  async componentDidMount() { //Monta na tela.
     this.loadPosts();
   }
 
