@@ -1,86 +1,79 @@
-import React, { Component } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import ButtonPaginationPosts from "../../components/ButtonPaginationPosts/ButtonPaginationPosts";
 import CardPosts from "../../components/CardPosts/CardPosts";
 import TextInput from "../../components/TextInput/TextInput";
 import { loadPosts } from "../../utils/load-post";
 import "./style.css";
 
-class Home extends Component {
-  state = {
-    posts: [],
-    allPosts: [],
-    page: 0,
-    postsPerPage: 8,
-    searchValue: "",
-  };
+const Home = () => {
+  const [posts, setPosts] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
+  const [page, setPage] = useState(0);
+  const [postsPerPage] = useState(8);
+  const [searchValue, setSearchValue] = useState("");
 
-  async componentDidMount() { //Monta na tela.
-    this.loadPosts();
-  }
+  const noMorePosts = page + postsPerPage >= allPosts.length;
 
-  loadPosts = async () => {
-    const { page, postsPerPage } = this.state;
-    const postsAndPhotos = await loadPosts(); //onde esta po fetch das APis.
-    this.setState({
-      posts: postsAndPhotos.slice(page, postsPerPage), //faz a paginação dos posts.
-      allPosts: postsAndPhotos,
-    });
-  };
-
-  loadMorePosts = () => {
-    const { page, allPosts, postsPerPage, posts } = this.state;
-    const nextPage = page + postsPerPage;
-    const nextPosts = allPosts.slice(nextPage, nextPage + postsPerPage);
-    posts.push(...nextPosts);
-    this.setState({ posts, page: nextPage });
-  };
-
-
-  handleChange = (e) => {
-    const { value } = e.target;
-    this.setState({ searchValue: value });
-  };
-
-  render() {
-    const { posts, page, postsPerPage, allPosts, searchValue } = this.state;
-    const noMorePosts = page + postsPerPage >= allPosts.length;
-
-    const filteredPosts = !!searchValue ?  // (!!)converte a string por boolean no caso só vai filtrar se for true "tiver valor no searchValue"
-      allPosts.filter(post => {
+  const filteredPosts = !!searchValue // (!!)converte a string por boolean no caso só vai filtrar se for true "tiver valor no searchValue"
+    ? allPosts.filter((post) => {
         return post.title.toLowerCase().includes( //faz o filtro acontecer...
           searchValue.toLocaleLowerCase()
         );
       })
-      : posts;
-    return (
-      <React.Fragment>
-        <section className="container">
-          <TextInput value={searchValue} onchange={this.handleChange} />
+    : posts;
 
-          {filteredPosts.length > 0 &&( // se tiver post filtrado vai mostrar....
-            <div className="posts">
-              {filteredPosts.map((post) => (
-                <CardPosts propsPost={post} key={post.id} />
-              ))}
+  const handleLoadPosts = useCallback(async(page, postsPerPage) => { //como foi passado parametros para a função não é necessario que se passe as dependencias no colchetes.
+    const postsAndPhotos = await loadPosts(); //onde esta as Promisses do fetch das APis.
+    setPosts(postsAndPhotos.slice(page, postsPerPage));
+    setAllPosts(postsAndPhotos);
+  }, []);
+
+    useEffect(() => { //useEffect é o msm que componentDidMount.
+    handleLoadPosts(0, postsPerPage);
+  }, [handleLoadPosts, postsPerPage]); //dentro desses colchetes é passado a dependencia do useEffect.
+
+  const loadMorePosts = () => { //função que seta os posts por paginação.
+    const nextPage = page + postsPerPage;
+    const nextPosts = allPosts.slice(nextPage, nextPage + postsPerPage);
+    posts.push(...nextPosts);
+    setPosts(posts);
+    setPage(nextPage);
+  };
+
+  const handleChange = (e) => { //Função do input
+    const { value } = e.target;
+    setSearchValue(value);
+  };
+
+  return (
+    <React.Fragment>
+      <section className="container">
+        <TextInput value={searchValue} onchange={handleChange} />
+
+        {filteredPosts.length > 0 && ( // se tiver post filtrado vai mostrar....
+          <div className="posts">
+            {filteredPosts.map((post) => (
+              <CardPosts propsPost={post} key={post.id} />
+            ))}
           </div>
+        )}
+        {filteredPosts.length === 0 && ( // se não tiver post vai aparecer uma msg...
+          <p>Nenhum Post encontrado :(</p>
+        )}
+
+        <div className="button-container">
+          {!searchValue && ( //se tiver valor no filtro vai ocultar o botão...
+            <ButtonPaginationPosts
+              className="button"
+              textProps="Load More Posts"
+              onClickPropsEvent={loadMorePosts}
+              disabled={noMorePosts}
+            />
           )}
-          {filteredPosts.length === 0 &&(  // se não tiver post vai aparecer uma msg...
-            <p>Nenhum Post encontrado :(</p>
-          )}
-          
-          <div className="button-container">
-            {!searchValue && ( //se tiver valor no filtro vai ocultar o botão...
-              <ButtonPaginationPosts
-                className="button"
-                textProps="+ Load More Posts +"
-                onClickPropsEvent={this.loadMorePosts}
-                disabled={noMorePosts}
-              />
-            )}
-          </div>
-        </section>
-      </React.Fragment>
-    );
-  }
-}
+        </div>
+      </section>
+    </React.Fragment>
+  );
+};
+
 export default Home;
