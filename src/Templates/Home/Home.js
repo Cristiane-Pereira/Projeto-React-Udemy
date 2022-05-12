@@ -29,8 +29,9 @@ const Home = () => {
   }, []);
 
     useEffect(() => { //useEffect é o msm que componentDidMount.
+    // console.log(new Date().toLocaleString('pt-BR'));
     handleLoadPosts(0, postsPerPage);
-  }, [handleLoadPosts, postsPerPage]); //dentro desses colchetes é passado a dependencia do useEffect.
+  }, [handleLoadPosts, postsPerPage]); //dentro desses colchetes é passado a dependência do useEffect.
 
   const loadMorePosts = () => { //função que seta os posts por paginação.
     const nextPage = page + postsPerPage;
@@ -58,7 +59,7 @@ const Home = () => {
           </div>
         )}
         {filteredPosts.length === 0 && ( // se não tiver post vai aparecer uma msg...
-          <p>Nenhum Post encontrado :(</p>
+          <p>Não existem posts =(</p>
         )}
 
         <div className="button-container">

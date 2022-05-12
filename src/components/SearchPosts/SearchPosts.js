@@ -1,13 +1,13 @@
 import React, { useState, Fragment  } from "react";
 
-const SearchPosts = ({active}) => {
+const SearchPosts = () => {
     const [searchValue, setSearchValue] = useState("");
 
   const handleChange = (e) => {
     const { value } = e.target;
     setSearchValue(value);
   };
-  
+
   return (
     <Fragment>
       <input
